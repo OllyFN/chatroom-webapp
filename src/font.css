@@ -1,0 +1,8 @@
+@font-face {
+	font-family: 'Roboto';
+	src: local('Roboto'), url('Roboto.woff2') format('woff2');
+}
+
+* {
+	font-family: 'Roboto';
+}

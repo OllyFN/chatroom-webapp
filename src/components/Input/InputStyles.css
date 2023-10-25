@@ -1,0 +1,28 @@
+.inputWrapper {
+	display: flex;
+	flex-direction: row;
+}
+
+.input {
+	border: 2px solid black;
+	border-radius: 8px;
+	padding: 8px;
+	font-size: 2em;
+	outline: none;
+	width: 100%;
+}
+.sendButton {
+	width: 3.33%;
+	height: 100%;
+	border: none;
+	outline: none;
+	background: transparent;
+	cursor: pointer;
+}
+.sendIcon {
+	user-select: none;
+	pointer-events: none;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
