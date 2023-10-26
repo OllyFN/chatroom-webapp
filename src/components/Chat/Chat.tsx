@@ -1,5 +1,6 @@
 import { onValue } from 'firebase/database'
 import { useState, useEffect } from 'react'
+import { databaseRef } from '../../main.tsx'
 import Message from '../Message/Message.tsx'
 import Input from '../Input/Input.tsx'
 import './chatStyles.css'
@@ -11,11 +12,10 @@ This component handles reading the messages and rendering the Message & Input co
 */
 
 interface chatProps {
-	databaseRef: any // firebase database ref
 	sendMessage:(message:string) => void // sendMessage function from main.tsx
 }
 
-export default function Chat({databaseRef, sendMessage}:chatProps) {
+export default function Chat({sendMessage}:chatProps) {
 	const [messages, setMessages] = useState<Array<{message:string, createdAt:number}>>([])
 	
 	// This only runs on mount
@@ -24,6 +24,13 @@ export default function Chat({databaseRef, sendMessage}:chatProps) {
 		// if the database is empty snapshot.val() returns null
 		onValue(databaseRef, snapshot => setMessages(snapshot.val() ?? []))
 	, [])
+
+	// Why do we import the databaseRef instead of passing it as a prop?
+	// React handles props as reactive values but our databaseRef never changes
+	// thus the React linter will get mad at us for using a reactive value without
+	// putting it in the useEffect dependencies, by moving databaseRef
+	// outside the component we "prove" to the linter it is NOT a reactive value
+	// more information: https://react.dev/learn/lifecycle-of-reactive-effects#all-variables-declared-in-the-component-body-are-reactive
 
 	const messageComponents = Object.entries(messages) // We get all the message entries
 	.sort((a, b) => b[1].createdAt - a[1].createdAt) // Sort them from newest at the top

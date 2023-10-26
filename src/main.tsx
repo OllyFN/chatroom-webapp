@@ -23,7 +23,10 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
-const databaseRef = ref(database);
+
+// check Chat.tsx for explanation as to why we're exporting the databaseRef
+export const databaseRef = ref(database); 
+
 const sendMessage = (message:string) => // Function used by the Input component 
   push(databaseRef, {message, createdAt: Date.now()})
 

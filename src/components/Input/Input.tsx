@@ -50,8 +50,8 @@ const sanitizeMessage = (message:string) => {
 export default function Input({sendMessage}:{sendMessage: (message:string) => void}) {
 	const [message, setMessage] = useState('')
 
-	// This function runs whenever the user clicks the send button
-	const sendClicked = () => {
+	// This function runs whenever the user clicks the send button or presses Enter
+	const submitMessage = () => {
 		// It checks if the message is valid
 		if (validateMessage(message)) {
 			// If it passes the checks, it passes the sanitized message as the argument
@@ -62,10 +62,20 @@ export default function Input({sendMessage}:{sendMessage: (message:string) => vo
 		}
 	}
 
+	// these are the props we pass to the input component,
+	// by declaring it outside the return function we keep the code readable
+	const inputProps = {
+		placeholder: "Message",
+		spellCheck: "false",
+		value: message,
+		onChange: e => setMessage(e.currentTarget.value),
+		onKeyPress: e => e.key=='Enter' && submitMessage()
+	}
+
 	return(
 		<div className="inputWrapper">
-			<input placeholder="Message" className="input" spellCheck="false" value={message} onChange={e => setMessage(e.currentTarget.value)} />
-			<button className="sendButton" onClick={sendClicked}>
+			<input className="input" {...inputProps} />
+			<button className="sendButton" onClick={submitMessage}>
 				<img className="sendIcon" src={sendIcon} aria-label='send'/>
 			</button>
 		</div>
